@@ -26,7 +26,7 @@ task_schema = schema.Schema(
 Task = model.Model('DrumboTestingTasksTable', task_schema)
 
 # Create new task
-# task_doc = Task(
+# task_doc = Task.create(
 #     company_id='Westpoint',
 #     client='Mariana',
 #     has_notes=0,

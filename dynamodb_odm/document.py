@@ -1,22 +1,27 @@
 exclude = [
-    'table'
+    'table',
+    'pk'
 ]
 
 
 class Document:
-    def __init__(self, document, table):
+    def __init__(self, document, pk, table):
         self.table = table
+        self.pk = pk
 
         for k, v in document.items():
             setattr(self, k, v)
 
     def save(self):
-        item = self.__dict__
-
-        for k in exclude:
-            del item[k]
+        item = dict([
+            [k, v] for k, v in self.__dict__.items() if k not in exclude
+        ])
 
         self.table.put_item(Item=item)
 
     def delete(self):
-        pass
+        self.table.delete_item(Key={
+            self.pk: getattr(self, self.pk)
+        })
+
+        return True
